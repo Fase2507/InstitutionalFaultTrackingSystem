@@ -75,8 +75,8 @@ public class CategorySuggestionService {
                                        String title,
                                        String description) {
 
-        String model = env.getProperty("gemini.model", "gemini-2.0-flash");
-        String baseUrl = env.getProperty("gemini.url");
+        String model = normalizeModelName(env.getProperty("gemini.model", "gemini-2.0-flash"));
+        String baseUrl = env.getProperty("gemini.url", "https://generativelanguage.googleapis.com/v1beta");
 
         String prompt = buildPrompt(categories, title, description);
 
@@ -95,11 +95,12 @@ public class CategorySuggestionService {
 
         payload.put("contents", contents);
 
-        String fullUrl = baseUrl + "/" + model + ":generateContent?key=" + apiKey;
+        String fullUrl = baseUrl + "/models/" + model + ":generateContent";
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(fullUrl))
                 .timeout(REQUEST_TIMEOUT)
+                .header("x-goog-api-key", apiKey)
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(payload.toString(), StandardCharsets.UTF_8))
                 .build();
@@ -174,6 +175,17 @@ public class CategorySuggestionService {
 
     private String safe(String val) {
         return val == null ? "" : val.trim();
+    }
+
+    private String normalizeModelName(String modelName) {
+        if (modelName == null || modelName.isBlank()) {
+            return "gemini-2.0-flash";
+        }
+        String normalized = modelName.trim();
+        if (normalized.startsWith("models/")) {
+            normalized = normalized.substring("models/".length());
+        }
+        return normalized;
     }
 
     private String normalize(String value) {
