@@ -28,7 +28,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"role", "department", "reportedFaults", "assignedFaults"})
+@ToString(exclude = {"role", "reportedFaults", "assignedFaults"})
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "users")
 public class User {

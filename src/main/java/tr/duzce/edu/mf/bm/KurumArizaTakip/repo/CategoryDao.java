@@ -29,8 +29,17 @@ public class CategoryDao extends AbstractHibernateDao {
         return currentSession().createQuery("select c from Category c order by c.catName", Category.class).getResultList();
     }
 
+    public List<Category> findAllByIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return List.of();
+        }
+        return currentSession()
+                .createQuery("select c from Category c where c.id in (:ids) order by c.catName", Category.class)
+                .setParameterList("ids", ids)
+                .getResultList();
+    }
+
     public void save(Category category) {
         currentSession().persist(category);
     }
 }
-

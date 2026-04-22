@@ -48,7 +48,7 @@ public class RequestLoggingInterceptor implements HandlerInterceptor {
         if (ex == null) {
             log.info("REQ_OUT status={} view={} elapsedMs={}", response.getStatus(), viewName, elapsedMs);
         } else {
-            log.error("REQ_ERR status={} view={} elapsedMs={} ex={}", response.getStatus(), viewName, elapsedMs, ex.toString(), ex);
+            log.error("REQ_ERR status={} view={} elapsedMs={} ex={}", response.getStatus(), viewName, elapsedMs, ex);
         }
     }
 

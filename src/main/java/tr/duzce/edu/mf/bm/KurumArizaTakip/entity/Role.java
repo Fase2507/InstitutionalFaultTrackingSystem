@@ -1,6 +1,5 @@
 package tr.duzce.edu.mf.bm.KurumArizaTakip.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -40,6 +39,6 @@ public class Role {
     private String roleName;
 
     @Builder.Default
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     private Set<User> users = new LinkedHashSet<>();
 }
